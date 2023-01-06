@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Squelette</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@3.0.7/dist/vuetify.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@3.0.7/dist/vuetify.min.css">
+
+</head>
+
+<body>
+
+    <div id="app">
+        <v-app>
+            <v-app-bar title="Formation IBISA"></v-app-bar>
+            <v-main fluid class="fill-height">...</v-main>
+            <v-footer app class="primary" dark flat>
+                <v-spacer></v-spacer>
+                <div>
+                    This website is maintained by <a target="_blank" href="https://www.france-bioinformatique.fr/">IFB-ElixirFr</a>
+                </div>
+                <v-spacer></v-spacer>
+            </v-footer>
+            <v-footer>This website is maintained by IFB-ElixirFr</v-footer>
+        </v-app>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+        const { createVuetify } = Vuetify
+        const vuetify = createVuetify()
+        const app = createApp({
+            data() {
+                return {
+                    message: 'Hello Vue!'
+                }
+            }
+        })
+        app.use(vuetify).mount('#app')
+    </script>
+</body>
+
+</html>
