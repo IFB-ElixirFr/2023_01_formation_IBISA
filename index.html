@@ -19,6 +19,7 @@
         <v-app>
             <v-app-bar title="Formation IBISA"></v-app-bar>
             <v-main fluid class="fill-height">
+                <h1>Évaluation de notre solution de stockage de données</h1>
                 <div id="main" style="width: 600px;height:400px;"></div>
             </v-main>
             <v-footer app class="primary" dark flat>
@@ -48,7 +49,6 @@
                     download: true,
                     complete: function (results) {
                         let data = results.data;
-                        console.log("Finished:", data);
                         let indicator = [];
                         let legend = [];
                         
@@ -75,9 +75,6 @@
 
                         // Specify the configuration items and data for the chart
                         var option = {
-                            title: {
-                                text: 'Basic Radar Chart'
-                            },
                             legend: {
                                 data: legend
                             },
