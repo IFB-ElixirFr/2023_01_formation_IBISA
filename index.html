@@ -11,16 +11,26 @@
     <script src="https://cdn.jsdelivr.net/npm/vuetify@3.0.7/dist/vuetify.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@3.0.7/dist/vuetify.min.css">
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="shortcut icon" type="image/png" href="https://www.france-bioinformatique.fr/wp-content/uploads/logo-ifb-couleur.svg" />
 </head>
 
 <body>
     <div id="app">
         <v-app>
-            <v-app-bar title="Formation IBISA"></v-app-bar>
-            <v-main fluid class="fill-height">
-                <h1>Évaluation de notre solution de stockage de données</h1>
-                <div id="main" style="width: 600px;height:400px;"></div>
+            <v-app-bar title="Formation IBISA">
+                <v-btn stacked variant="tonal" href="https://github.com/IFB-ElixirFr/2023_01_formation_IBISA"
+                    target="_blank">
+                    <i class="fa-brands fa-github mb-1" style="font-size: 30px;"></i>
+                    GitHub
+                </v-btn>
+            </v-app-bar>
+            <v-main class="fill-height text-center">
+                <h1 class="my-4">Évaluation de notre solution de stockage de données</h1>
+                <br>
+                <div id="main" style="width: 100%;height:90%;" class=" ma-4"></div>
             </v-main>
             <v-footer app class="primary" dark flat>
                 <v-spacer></v-spacer>
@@ -30,7 +40,6 @@
                 </div>
                 <v-spacer></v-spacer>
             </v-footer>
-            <v-footer>This website is maintained by IFB-ElixirFr</v-footer>
         </v-app>
     </div>
 
@@ -51,7 +60,7 @@
                         let data = results.data;
                         let indicator = [];
                         let legend = [];
-                        
+
                         var dataSeries = [];
                         for (var element of data[0].slice(2)) {
                             var temp = {};
@@ -68,7 +77,6 @@
                             legend.push(element[1])
                             dataSeries.push(temp);
                         }
-                        console.log(dataSeries);
 
                         // Initialize the echarts instance based on the prepared dom
                         var myChart = echarts.init(document.getElementById('main'));
@@ -84,8 +92,12 @@
                             },
                             series: [
                                 {
-                                    name: 'Budget vs spending',
+                                    name: 'Evaluation',
                                     type: 'radar',
+                                    tooltip: {
+                                        trigger: 'item'
+                                    },
+                                    areaStyle: {},
                                     data: dataSeries
                                 }
                             ]
