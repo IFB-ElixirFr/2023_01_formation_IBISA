@@ -5,23 +5,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Squelette</title>
+    <title>Formation IBISA</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/papaparse@5.3.2/papaparse.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify@3.0.7/dist/vuetify.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@3.0.7/dist/vuetify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.js"></script>
 
 </head>
 
 <body>
-
     <div id="app">
         <v-app>
             <v-app-bar title="Formation IBISA"></v-app-bar>
-            <v-main fluid class="fill-height">...</v-main>
+            <v-main fluid class="fill-height">
+                <div id="main" style="width: 600px;height:400px;"></div>
+            </v-main>
             <v-footer app class="primary" dark flat>
                 <v-spacer></v-spacer>
                 <div>
-                    This website is maintained by <a target="_blank" href="https://www.france-bioinformatique.fr/">IFB-ElixirFr</a>
+                    This website is maintained by <a target="_blank"
+                        href="https://www.france-bioinformatique.fr/">IFB-ElixirFr</a>
                 </div>
                 <v-spacer></v-spacer>
             </v-footer>
@@ -36,9 +40,68 @@
         const app = createApp({
             data() {
                 return {
-                    message: 'Hello Vue!'
+                    urlFile: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQA78A9MBaU91UUC0kJRpUo5UD255nAdXncMNHAWfnVYljfY4qv8nElTIe6KDjdUzX1iwJeHMyc3TYl/pub?gid=2069355443&single=true&output=csv"
                 }
-            }
+            },
+            created() {
+                Papa.parse(this.urlFile, {
+                    download: true,
+                    complete: function (results) {
+                        let data = results.data;
+                        console.log("Finished:", data);
+                        let indicator = [];
+                        let legend = [];
+                        
+                        var dataSeries = [];
+                        for (var element of data[0].slice(2)) {
+                            var temp = {};
+                            temp['name'] = element;
+                            temp['max'] = 5;
+                            indicator.push(temp)
+                        }
+
+                        var dataSeries = [];
+                        for (var element of data.slice(1)) {
+                            var temp = {};
+                            temp['value'] = element.slice(2)
+                            temp['name'] = element[1]
+                            legend.push(element[1])
+                            dataSeries.push(temp);
+                        }
+                        console.log(dataSeries);
+
+                        // Initialize the echarts instance based on the prepared dom
+                        var myChart = echarts.init(document.getElementById('main'));
+
+                        // Specify the configuration items and data for the chart
+                        var option = {
+                            title: {
+                                text: 'Basic Radar Chart'
+                            },
+                            legend: {
+                                data: legend
+                            },
+                            radar: {
+                                // shape: 'circle',
+                                indicator: indicator
+                            },
+                            series: [
+                                {
+                                    name: 'Budget vs spending',
+                                    type: 'radar',
+                                    data: dataSeries
+                                }
+                            ]
+                        };
+
+                        // Display the chart using the configuration items and data just specified.
+                        myChart.setOption(option);
+                    }
+                })
+            },
+            methods: {
+
+            },
         })
         app.use(vuetify).mount('#app')
     </script>
