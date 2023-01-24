@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formation IBISA</title>
+
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://unpkg.com/papaparse@5.3.2/papaparse.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify@3.1.0/dist/vuetify.min.js"></script>
@@ -112,7 +113,6 @@
                     tab: 'Radar',
                     items: ['Radar', 'Tab', 'About'],
                     urlFile: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQA78A9MBaU91UUC0kJRpUo5UD255nAdXncMNHAWfnVYljfY4qv8nElTIe6KDjdUzX1iwJeHMyc3TYl/pub?gid=2069355443&single=true&output=csv",
-
                 }
             },
             created() {
@@ -141,7 +141,6 @@
                             this.dataTable.push(element.slice(2))
                             dataSeries.push(temp);
                         }
-
 
                         // Initialize the echarts instance based on the prepared dom
                         var myChart = echarts.init(document.getElementById('main'));
