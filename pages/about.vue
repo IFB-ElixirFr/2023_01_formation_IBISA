@@ -3,17 +3,21 @@
     Cette page permet d'évaluer votre solution de stockage à travers les
     indicateurs suivants
   </p>
-  <v-list lines="one">
-    <v-list-item
-      v-for="item in colHeaders"
-      :key="item"
-      :title="item"
-    ></v-list-item>
-  </v-list>
+  <ul>
+    <li v-for="(item, index) in importStore.colnames" :key="index">
+      {{ item }}
+    </li>
+  </ul>
 </template>
 
 <script>
-
+export default {
+  async setup() {
+    const importStore = useImportStore();
+    await importStore.import();
+    return { importStore };
+  },
+};
 </script>
 
 <style>

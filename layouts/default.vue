@@ -14,7 +14,7 @@
         </q-toolbar-title>
         <q-tabs align="left">
           <q-route-tab to="/" label="Chart" />
-          <q-route-tab to="/about" label="Tab" />
+          <q-route-tab to="/tab" label="Tab" />
           <q-route-tab to="/about" label="About" />
         </q-tabs>
       </q-toolbar>
@@ -49,6 +49,10 @@ export default {
       },
     };
   },
-
 };
 </script>
+
+
+<style>
+
+</style>

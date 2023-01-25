@@ -12,9 +12,21 @@ export default defineNuxtConfig({
         '@quasar/extras/mdi-v7/mdi-v7.css',
         '@quasar/extras/fontawesome-v6/fontawesome-v6.css',
         '~/assets/styles/quasar.sass',
+        '~/assets/styles/myStyle.css',
     ],
     build: {
-        transpile: ['quasar'],
+        transpile: ['quasar', '@pinia/nuxt'],
+    },
+    modules: [
+        [
+            '@pinia/nuxt',
+            {
+                autoImports: ['defineStore', 'acceptHMRUpdate'],
+            },
+        ],
+    ],
+    imports: {
+        dirs: ['stores'],
     },
     vite: {
         define: {
