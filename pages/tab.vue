@@ -1,18 +1,13 @@
 <template>
-  <table class="table">
-    <thead>
-      <tr>
-        <th v-for="val in importStore.colnames" class="text-left">
-          {{ val }}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(val, indextr2) in importStore.dataTable" :key="indextr2">
-        <td v-for="(v, index2) in val" :key="index2">{{ v }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <h2>Résultats</h2>
+  <div class="q-pa-md">
+    <q-table
+      title="Evaluation du stoakcge de données"
+      :rows="importStore.dataDic"
+      :columns="importStore.colnames"
+      row-key="name"
+    />
+  </div>
 </template>
 
 <script>

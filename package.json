@@ -9,6 +9,9 @@
     "deploy": "touch .output/public/.nojekyll ; push-dir --dir=dist --branch=gh-pages --cleanup"
   },
   "devDependencies": {
+    "@vueuse/core": "^9.11.1",
+    "@vueuse/math": "^9.11.1",
+    "@vueuse/nuxt": "^9.11.1",
     "nuxt": "^3.0.0",
     "push-dir": "^0.4.1"
   },

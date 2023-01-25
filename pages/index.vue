@@ -1,5 +1,8 @@
 <template>
-  <div id="main" style="width: 100%; height: 90%"></div>
+  <h2>Bienvenue</h2>
+  <p>
+    Bienvenue sur le site compagnon de la formation FAIR pour IBISA. 
+  </p>
 </template>
 
 <script>
@@ -7,16 +10,8 @@ export default {
   setup() {
     const importStore = useImportStore();
     importStore.import();
-    importStore.$subscribe((mutation, state) =>  importStore.createChart('main'));
     return { importStore };
   },
-  data() {
-    return {};
-  },
-  mounted() {
-   this.importStore.createChart('main');
-  },
-
 };
 </script>
 

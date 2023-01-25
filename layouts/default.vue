@@ -10,10 +10,12 @@
             style="height: 20px; width: 40px"
           />
 
-          LES ATELIERS DU GIS IBiSA
+          Évaluation de notre solution de stockage de données
         </q-toolbar-title>
         <q-tabs align="left">
-          <q-route-tab to="/" label="Chart" />
+          <q-route-tab to="/" label="Home" />
+          <q-route-tab to="/stats" label="Stats" />
+          <q-route-tab to="/chart" label="Chart" />
           <q-route-tab to="/tab" label="Tab" />
           <q-route-tab to="/about" label="About" />
         </q-tabs>
@@ -21,8 +23,7 @@
     </q-header>
     <q-page-container>
       <q-page>
-        <div class="window-height">
-          <h4>Évaluation de notre solution de stockage de données</h4>
+        <div class="window-height q-pa-lg">
           <router-view />
         </div>
       </q-page>
@@ -54,5 +55,4 @@ export default {
 
 
 <style>
-
 </style>
