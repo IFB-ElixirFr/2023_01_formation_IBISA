@@ -16,7 +16,8 @@ export const useImportStore = defineStore('ImportStore', {
             dataDic: [],
             legend: [],
             indicator: [],
-            stats: []
+            stats: [],
+            xnames: []
         };
     },
     getters: {},
@@ -34,6 +35,7 @@ export const useImportStore = defineStore('ImportStore', {
                             temp["name"] = element;
                             temp["max"] = 5;
                             this.indicator.push(temp);
+                            this.xnames.push(element.split("(")[0]);
                             this.colnames.push(
                                 {
                                     'name': element,
@@ -107,25 +109,75 @@ export const useImportStore = defineStore('ImportStore', {
             myChart.setOption(option);
         },
         createBarplot(divName) {
-            console.log(this.dataSeries);
-            var chartDom = document.getElementById(divName);
-            var myChart = echarts.init(chartDom);
-            var option;
 
-            option = {
-                xAxis: {
-                    data: this.indicator
-                },
-                yAxis: {},
-                series: [
-                    {
-                        type: 'candlestick',
-                        data: this.dataSeries
-                    }
-                ]
-            };
+            if (this.dataTable.length !== 0) {
+                var data = this.dataTable[0].map((_, colIndex) => this.dataTable.map(row => row[colIndex]));
 
-            option && myChart.setOption(option);
+                var chartDom = document.getElementById(divName);
+                var myChart = echarts.init(chartDom);
+                var option;
+                var xnames = this.xnames;
+
+                option = {
+                    yAxis: {
+                        type: 'category',
+                        boundaryGap: true,
+                        nameGap: 30,
+                        splitArea: {
+                            show: false
+                        },
+                        splitLine: {
+                            show: false
+                        }
+                    },
+                    dataset: [
+                        {
+                            source: data
+                        },
+                        {
+                            transform: {
+                                type: 'boxplot',
+                                config: {
+                                    itemNameFormatter: function (params) {
+                                        return xnames[params.value];
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            fromDatasetIndex: 1,
+                            fromTransformResult: 1
+                        }
+                    ],
+                    xAxis: {},
+                    tooltip: {
+                        trigger: 'item',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    title: {
+                        text: 'Boxplot des résultats'
+                    },
+                    grid: {
+                        left: 200
+                    },
+                    series: [
+                        {
+                            name: 'boxplot',
+                            type: 'boxplot',
+                            datasetIndex: 1
+                        },
+                        {
+                            name: 'outlier',
+                            type: 'scatter',
+                            datasetIndex: 2
+                        }
+                    ]
+                };
+
+                option && myChart.setOption(option);
+            }
         }
     },
 });
