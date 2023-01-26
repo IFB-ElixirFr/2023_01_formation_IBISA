@@ -37,8 +37,8 @@
       content-center
     "
   >
-    <img src="img/IBiSA.png" style="height: 140px" />
-    <img src="img/IFB-HAUT-COULEUR-PETIT.png" style="height: 140px" />
+    <q-img src="img/IBiSA.png" height="140px" fit="contain" width="45%" />
+    <q-img src="img/IFB-HAUT-COULEUR-PETIT.png" height="140px" fit="contain" width="45%" />
   </div>
 
   <p>
