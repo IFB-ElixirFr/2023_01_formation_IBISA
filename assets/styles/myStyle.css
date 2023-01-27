@@ -42,12 +42,17 @@
   padding: 8px;
 }
 
+.tableStyleCenter td,
+.tableStyleCenter th {
+  text-align: center ! important;
+}
+
 .tableStyle tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-.tableStyle tr:hover {
-  background-color: #ddd;
+.tableStyleCenter tr:nth-child(even) {
+  background-color: white;
 }
 
 .tableStyle th {

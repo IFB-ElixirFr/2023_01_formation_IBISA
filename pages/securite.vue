@@ -33,6 +33,23 @@
       </tr>
     </tbody>
   </table>
+  <h3>Résultats</h3>
+  <div class="row q-col-gutter-md q-py-lg">
+    <div
+      class="col-3"
+      v-for="(n, index) in importStore.dataSecurity"
+      :key="index"
+    >
+      <div
+        class="text-center shadow-1 q-pa-sm"
+        :style="{ background: color(n.ScoreSecurity) }"
+      >
+        <h2>{{ n.ScoreSecurity }}</h2>
+        <h4>{{ n.Pseudo }}</h4>
+      </div>
+    </div>
+  </div>
+  <br />
 </template>
 
 
@@ -42,6 +59,20 @@ export default {
     const importStore = useImportStore();
     await importStore.import();
     return { importStore };
+  },
+  methods: {
+    color(value) {
+      switch (true) {
+        case value <= 6:
+          return "yellow";
+        case value <= 9:
+          return "orange";
+        case value <= 16:
+          return "red";
+        default:
+          return "white";
+      }
+    },
   },
 };
 </script>

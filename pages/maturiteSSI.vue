@@ -66,6 +66,13 @@
       </tr>
     </tbody>
   </table>
+  <h3>Résultats</h3>
+  <div class="row q-col-gutter-md q-py-lg">
+    <div class="col-3" v-for="(n, index) in importStore.dataMaturity" :key="index">
+      <div class="text-center shadow-1 q-pa-sm" :style="{ 'background': colorBG(n.ScoreMaturity), 'color' : color(n.ScoreMaturity) }"><h2>{{ n.ScoreMaturity }}</h2><h4>{{  n.Pseudo }}</h4></div>
+    </div>
+  </div>
+  <br>
 </template>
 
 
@@ -75,6 +82,40 @@ export default {
     const importStore = useImportStore();
     await importStore.import();
     return { importStore };
+  },
+  methods: {
+    colorBG(value) {
+      switch (true) {
+        case value <= 10:
+          return "#eafaf1";
+        case value <= 25:
+          return "#eafaf1";
+        case value <= 40:
+          return "#2ecc71";
+        case value <= 50:
+          return "#186a3b";
+        case value <= 60:
+          return "#186a3b";
+        default:
+          return "white";
+      }
+    },
+    color(value) {
+      switch (true) {
+        case value <= 10:
+          return "black";
+        case value <= 25:
+          return "black";
+        case value <= 40:
+          return "black";
+        case value <= 50:
+          return "white";
+        case value <= 60:
+          return "white";
+        default:
+          return "black";
+      }
+    },
   },
 };
 </script>

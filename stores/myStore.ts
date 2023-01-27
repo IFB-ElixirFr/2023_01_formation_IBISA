@@ -5,6 +5,10 @@ import * as echarts from "echarts";
 const urlFileFormulaire = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQA78A9MBaU91UUC0kJRpUo5UD255nAdXncMNHAWfnVYljfY4qv8nElTIe6KDjdUzX1iwJeHMyc3TYl/pub?gid=2069355443&single=true&output=csv"
 const urlFileStats = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQA78A9MBaU91UUC0kJRpUo5UD255nAdXncMNHAWfnVYljfY4qv8nElTIe6KDjdUzX1iwJeHMyc3TYl/pub?gid=1000434945&single=true&output=csv"
 
+const urlFileSecurityResponse = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNS8ibfHWWkfIA5MyJs6tlyK48iustx2rzLjQhhvWqcwUn1rBGOLs_w9a9sZaJnz3Yefo_Wx5oG2wy/pub?gid=1944821903&single=true&output=csv"
+const urlFileSecurityStats = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNS8ibfHWWkfIA5MyJs6tlyK48iustx2rzLjQhhvWqcwUn1rBGOLs_w9a9sZaJnz3Yefo_Wx5oG2wy/pub?gid=1150317142&single=true&output=csv"
+const urlFileSecurityScore = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNS8ibfHWWkfIA5MyJs6tlyK48iustx2rzLjQhhvWqcwUn1rBGOLs_w9a9sZaJnz3Yefo_Wx5oG2wy/pub?gid=484802418&single=true&output=csv"
+
 export const useImportStore = defineStore('ImportStore', {
 
     state: () => {
@@ -17,7 +21,14 @@ export const useImportStore = defineStore('ImportStore', {
             legend: [],
             indicator: [],
             stats: [],
-            xnames: []
+            xnames: [],
+            dataSecurity: [],
+            dataMaturity: [],
+            dataType: {
+                "Pianissimo : démarche autonome a minima": [],
+                "Mezzo-Forte : démarche assistée approfondie": [],
+                "Forte : hors champ de ce guide": []
+            }
         };
     },
     getters: {},
@@ -64,7 +75,6 @@ export const useImportStore = defineStore('ImportStore', {
                     download: true,
                     header: true,
                     complete: (results) => {
-                        console.log(results.data[0])
                         var temp = Object.entries(results.data[0])
                         for (var element of temp) {
                             this.stats.push({
@@ -76,6 +86,28 @@ export const useImportStore = defineStore('ImportStore', {
                         this.stats = useSorted(this.stats, (a, b) => a.value - b.value)
                     },
                 });
+
+                Papa.parse(urlFileSecurityScore, {
+                    download: true,
+                    header: true,
+                    complete: (results) => {
+                        this.dataSecurity = useSorted(results.data, (a, b) => a.ScoreSecurity - b.ScoreSecurity)
+                        this.dataMaturity = useSorted(results.data, (a, b) => a.ScoreMaturity - b.ScoreMaturity)
+
+                        console.log(results.data);
+                        for (var e in results.data) {
+                            var temp = results.data[e];
+                            if (temp.typeDemarche.startsWith('Pianissimo')) {
+                                this.dataType["Pianissimo : démarche autonome a minima"].push(temp.Pseudo + " (Sécurité :" + temp.ScoreSecurity + ", Maturité SSi : " + temp.ScoreMaturity + ")")
+                            } else if (temp.typeDemarche.startsWith('Mezzo')) {
+                                this.dataType["Mezzo-Forte : démarche assistée approfondie"].push(temp.Pseudo + " (Sécurité : " + temp.ScoreSecurity + ", Maturité SSi : " + temp.ScoreMaturity + ")")
+                            } else if (temp.typeDemarche.startsWith('Forte')) {
+                                this.dataType["Forte : hors champ de ce guide"].push(temp.Pseudo + " (Sécurité : " + temp.ScoreSecurity + ", Maturité SSi : " + temp.ScoreMaturity + ")")
+                            }
+                        }
+                    },
+                });
+
                 this.imported = true;
             }
         },

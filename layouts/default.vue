@@ -40,7 +40,7 @@
                 <q-item clickable v-close-popup to="/maturiteSSI">
                   <q-item-section>Maturité SSI</q-item-section>
                 </q-item>
-                <q-item clickable v-close-popup to="/">
+                <q-item clickable v-close-popup to="/typeDemarche">
                   <q-item-section>Type de démarche</q-item-section>
                 </q-item>
               </q-list>
