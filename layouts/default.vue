@@ -2,7 +2,6 @@
   <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-primary text-white" height-hint="98">
       <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title>
           <q-img
@@ -42,6 +41,9 @@
                 </q-item>
                 <q-item clickable v-close-popup to="/typeDemarche">
                   <q-item-section>Type de démarche</q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup to="/bilanSecurity">
+                  <q-item-section>Fiche bilan</q-item-section>
                 </q-item>
               </q-list>
             </q-menu>

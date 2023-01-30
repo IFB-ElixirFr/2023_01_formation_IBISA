@@ -45,7 +45,7 @@
         :style="{ background: color(n.ScoreSecurity) }"
       >
         <h2>{{ n.ScoreSecurity }}</h2>
-        <h4>{{ n.Pseudo }}</h4>
+        <h4>{{ n.name }}</h4>
       </div>
     </div>
   </div>

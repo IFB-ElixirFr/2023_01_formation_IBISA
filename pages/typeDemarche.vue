@@ -27,19 +27,19 @@
     <tbody>
       <tr>
         <td rowspan="3"> Niveau SSI de l'organisme</td>
-        <td>Elémentaire</td>
+        <td>Élémentaire</td>
         <td>Pianissimo : démarche autonome a minima</td>
         <td>Mezzo-Forte : démarche assistée approfondie</td>
         <td>Mezzo-Forte : démarche assistée approfondie</td>
       </tr>
       <tr>
-        <td>Elémentaire</td>
+        <td>Moyen</td>
         <td>Pianissimo : démarche autonome a minima</td>
         <td>Mezzo-Forte : démarche assistée approfondie</td>
         <td>Mezzo-Forte : démarche assistée approfondie</td>
       </tr>
       <tr>
-        <td>Elémentaire</td>
+        <td>Avancé</td>
         <td>Pianissimo : démarche autonome a minima</td>
         <td>Forte : hors champ de ce guide</td>
         <td>Forte : hors champ de ce guide</td>

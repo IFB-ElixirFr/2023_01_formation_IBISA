@@ -24,11 +24,9 @@ export const useImportStore = defineStore('ImportStore', {
             xnames: [],
             dataSecurity: [],
             dataMaturity: [],
-            dataType: {
-                "Pianissimo : démarche autonome a minima": [],
-                "Mezzo-Forte : démarche assistée approfondie": [],
-                "Forte : hors champ de ce guide": []
-            }
+            dataType: {},
+            dataComputedSecurity: [],
+            nameUserSecurity: [],
         };
     },
     getters: {},
@@ -87,22 +85,102 @@ export const useImportStore = defineStore('ImportStore', {
                     },
                 });
 
-                Papa.parse(urlFileSecurityScore, {
+                Papa.parse(urlFileSecurityResponse, {
                     download: true,
-                    header: true,
                     complete: (results) => {
-                        this.dataSecurity = useSorted(results.data, (a, b) => a.ScoreSecurity - b.ScoreSecurity)
-                        this.dataMaturity = useSorted(results.data, (a, b) => a.ScoreMaturity - b.ScoreMaturity)
+                        for (let i = 1; i < results.data.length; i++) {
 
-                        console.log(results.data);
-                        for (var e in results.data) {
-                            var temp = results.data[e];
-                            if (temp.typeDemarche.startsWith('Pianissimo')) {
-                                this.dataType["Pianissimo : démarche autonome a minima"].push(temp.Pseudo + " (Sécurité :" + temp.ScoreSecurity + ", Maturité SSi : " + temp.ScoreMaturity + ")")
-                            } else if (temp.typeDemarche.startsWith('Mezzo')) {
-                                this.dataType["Mezzo-Forte : démarche assistée approfondie"].push(temp.Pseudo + " (Sécurité : " + temp.ScoreSecurity + ", Maturité SSi : " + temp.ScoreMaturity + ")")
-                            } else if (temp.typeDemarche.startsWith('Forte')) {
-                                this.dataType["Forte : hors champ de ce guide"].push(temp.Pseudo + " (Sécurité : " + temp.ScoreSecurity + ", Maturité SSi : " + temp.ScoreMaturity + ")")
+                            var tempSS = Math.max(...results.data[i].slice(2, 5).map(Number)) + Math.max(...results.data[i].slice(5, 8).map(Number)) + Math.max(...results.data[i].slice(8, 13).map(Number)) + Math.max(...results.data[i].slice(13, 17).map(Number));
+                            if (tempSS <= 6) {
+                                var iss = '1- Faible'
+                            } else if (tempSS <= 9) {
+                                var iss = '2- Moyen'
+                            } else if (tempSS <= 16) {
+                                var iss = '3- Fort'
+                            }
+
+                            var SSM = results.data[i].slice(17, 29).map(Number).reduce((a, b) => a + b, 0)
+
+                            if (SSM <= 10) {
+                                var BSSM = {
+                                    'Niveau': '1- Pratique informelle',
+                                    'Description': "Pratiques de base mises en oeuvre de manière informelle et réactive sur l'initiative de ceux qui estiment en avoir besoin",
+                                    'Bilan': 'élémentaire'
+                                }
+                            } else if (SSM <= 15) {
+                                var BSSM = {
+                                    'Niveau': '2 - Pratique répétable et suivie',
+                                    'Description': "Pratiques de base mises en oeuvre de façon planifiée et suivie, avec un support relatif de l'organisme",
+                                    'Bilan': 'élémentaire'
+                                }
+                            } else if (SSM <= 40) {
+                                var BSSM = {
+                                    'Niveau': '3 - Processus définis',
+                                    'Description': "Mise en oeuvre d'un processus décrit, adapté à l'organisme, généralisé et bien compris par le management et par les exécutants",
+                                    'Bilan': 'moyen'
+                                }
+                            } else if (SSM <= 50) {
+                                var BSSM = {
+                                    'Niveau': '4 - Processus contrôlés',
+                                    'Description': "Le processus est coordonné et contrôlé à l'aide d'indicateurs permettant de corriger les défauts constatés",
+                                    'Bilan': 'avancé'
+                                }
+                            } else if (SSM <= 60) {
+                                var BSSM = {
+                                    'Niveau': '5 - Processus continuellement optimisé',
+                                    'Description': "L'amélioration des processus est dynamique, institutionnalisée et tient compte de l'évolution du contexte",
+                                    'Bilan': 'avancé'
+                                }
+                            }
+
+                            if (tempSS <= 6 && SSM <= 25) {
+                                var typeDemarche = 'Pianissimo : démarche autonome a minima'
+                            } else if (tempSS > 6 && tempSS < 10 && SSM <= 25) {
+                                var typeDemarche = 'Mezzo-Forte : démarche assistée approfondie'
+                            } else if (tempSS > 9 && SSM <= 25) {
+                                var typeDemarche = 'Mezzo-Forte : démarche assistée approfondie'
+                            } else if (tempSS <= 6 && SSM > 25 && SSM <= 40) {
+                                var typeDemarche = 'Pianissimo : démarche autonome a minima'
+                            } else if (tempSS > 6 && tempSS < 10 && SSM > 25 && SSM <= 40) {
+                                var typeDemarche = 'Mezzo-Forte : démarche assistée approfondie'
+                            } else if (tempSS > 9 && SSM > 25 && SSM <= 40) {
+                                var typeDemarche = 'Mezzo-Forte : démarche assistée approfondie'
+                            } else if (tempSS <= 6 && SSM > 40) {
+                                var typeDemarche = 'Pianissimo : démarche autonome a minima'
+                            } else if (tempSS > 6 && tempSS < 10 && SSM > 40) {
+                                var typeDemarche = 'Forte : hors champ de ce guide'
+                            } else if (tempSS > 9 && SSM > 40) {
+                                var typeDemarche = 'Forte : hors champ de ce guide'
+                            }
+
+
+                            this.dataComputedSecurity.push({
+                                'name': results.data[i][1],
+                                'ScoreSecurity': tempSS,
+                                'interpretationScoreSecurity': iss,
+                                'ScoreMaturity': SSM,
+                                'interpretationScoreMaturity': BSSM,
+                                'typeDemarche': typeDemarche
+                            })
+
+                            this.nameUserSecurity.push(results.data[i][1])
+                            this.dataSecurity = useSorted(this.dataComputedSecurity, (a, b) => a.ScoreSecurity - b.ScoreSecurity)
+                            this.dataMaturity = useSorted(this.dataComputedSecurity, (a, b) => a.ScoreMaturity - b.ScoreMaturity)
+                            
+                            this.dataType = {
+                                "Pianissimo : démarche autonome a minima": [],
+                                "Mezzo-Forte : démarche assistée approfondie": [],
+                                "Forte : hors champ de ce guide": []
+                            }
+                            for (var temp of this.dataComputedSecurity) {
+                                console.log(temp)
+                                if (temp.typeDemarche.startsWith('Pianissimo')) {
+                                    this.dataType["Pianissimo : démarche autonome a minima"].push(temp.name + " (Sécurité :" + temp.ScoreSecurity + ", Maturité SSi : " + temp.ScoreMaturity + ")")
+                                } else if (temp.typeDemarche.startsWith('Mezzo')) {
+                                    this.dataType["Mezzo-Forte : démarche assistée approfondie"].push(temp.name + " (Sécurité : " + temp.ScoreSecurity + ", Maturité SSi : " + temp.ScoreMaturity + ")")
+                                } else if (temp.typeDemarche.startsWith('Forte')) {
+                                    this.dataType["Forte : hors champ de ce guide"].push(temp.name + " (Sécurité : " + temp.ScoreSecurity + ", Maturité SSi : " + temp.ScoreMaturity + ")")
+                                }
                             }
                         }
                     },
