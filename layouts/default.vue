@@ -2,7 +2,6 @@
   <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-primary text-white" height-hint="98">
       <q-toolbar>
-
         <q-toolbar-title>
           <q-img
             src="img/IFB-HAUT-BLANC-PETIT.png"
@@ -44,6 +43,9 @@
                 </q-item>
                 <q-item clickable v-close-popup to="/bilanSecurity">
                   <q-item-section>Fiche bilan</q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup to="/statsSecurity">
+                  <q-item-section>Statistiques</q-item-section>
                 </q-item>
               </q-list>
             </q-menu>

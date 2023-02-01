@@ -7,7 +7,6 @@ const urlFileStats = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQA78A9MBa
 
 const urlFileSecurityResponse = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNS8ibfHWWkfIA5MyJs6tlyK48iustx2rzLjQhhvWqcwUn1rBGOLs_w9a9sZaJnz3Yefo_Wx5oG2wy/pub?gid=1944821903&single=true&output=csv"
 const urlFileSecurityStats = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNS8ibfHWWkfIA5MyJs6tlyK48iustx2rzLjQhhvWqcwUn1rBGOLs_w9a9sZaJnz3Yefo_Wx5oG2wy/pub?gid=1150317142&single=true&output=csv"
-const urlFileSecurityScore = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNS8ibfHWWkfIA5MyJs6tlyK48iustx2rzLjQhhvWqcwUn1rBGOLs_w9a9sZaJnz3Yefo_Wx5oG2wy/pub?gid=484802418&single=true&output=csv"
 
 export const useImportStore = defineStore('ImportStore', {
 
@@ -27,6 +26,8 @@ export const useImportStore = defineStore('ImportStore', {
             dataType: {},
             dataComputedSecurity: [],
             nameUserSecurity: [],
+            dataStatsSecurity: [],
+            dataStatsMaturity: [],
         };
     },
     getters: {},
@@ -166,14 +167,14 @@ export const useImportStore = defineStore('ImportStore', {
                             this.nameUserSecurity.push(results.data[i][1])
                             this.dataSecurity = useSorted(this.dataComputedSecurity, (a, b) => a.ScoreSecurity - b.ScoreSecurity)
                             this.dataMaturity = useSorted(this.dataComputedSecurity, (a, b) => a.ScoreMaturity - b.ScoreMaturity)
-                            
+
                             this.dataType = {
                                 "Pianissimo : démarche autonome a minima": [],
                                 "Mezzo-Forte : démarche assistée approfondie": [],
                                 "Forte : hors champ de ce guide": []
                             }
                             for (var temp of this.dataComputedSecurity) {
-                                console.log(temp)
+
                                 if (temp.typeDemarche.startsWith('Pianissimo')) {
                                     this.dataType["Pianissimo : démarche autonome a minima"].push(temp.name + " (Sécurité :" + temp.ScoreSecurity + ", Maturité SSi : " + temp.ScoreMaturity + ")")
                                 } else if (temp.typeDemarche.startsWith('Mezzo')) {
@@ -185,6 +186,18 @@ export const useImportStore = defineStore('ImportStore', {
                         }
                     },
                 });
+
+                Papa.parse(urlFileSecurityStats, {
+                    download: true,
+                    header: true,
+                    complete: (results) => {
+                        this.dataStatsSecurity = results.data.slice(0, 15)
+                        this.dataStatsMaturity = results.data.slice(15, )
+                        
+                        this.dataStatsSecurity = useSorted(this.dataStatsSecurity, (a, b) => parseFloat(a.score.replaceAll(",", ".")) - parseFloat(b.score.replaceAll(",", ".")))
+                        this.dataStatsMaturity = useSorted(this.dataStatsMaturity, (a, b) => parseFloat(a.score.replaceAll(",", ".")) - parseFloat(b.score.replaceAll(",", ".")))
+                    }
+                })
 
                 this.imported = true;
             }

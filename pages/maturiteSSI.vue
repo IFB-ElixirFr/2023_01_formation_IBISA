@@ -69,7 +69,7 @@
   <h3>Résultats</h3>
   <div class="row q-col-gutter-md q-py-lg">
     <div class="col-3" v-for="(n, index) in importStore.dataMaturity" :key="index">
-      <div class="text-center shadow-1 q-pa-sm" :style="{ 'background': colorBG(n.ScoreMaturity), 'color' : color(n.ScoreMaturity) }"><h2>{{ n.ScoreMaturity }}</h2><h4>{{  n.name }}</h4></div>
+      <div class="text-center shadow-1 q-pa-sm" :style="{ 'background': colorBG(n.ScoreMaturity), 'color' : color(n.ScoreMaturity) }"><h2>{{ n.ScoreMaturity }}</h2><h4>{{  n.name  }}</h4></div>
     </div>
   </div>
   <br>
